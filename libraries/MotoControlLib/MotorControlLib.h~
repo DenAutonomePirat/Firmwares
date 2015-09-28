@@ -1,6 +1,5 @@
 #ifndef MotorControlLib_h
 #define MotorControlLib_h
-
 #define BRAKEVCC 0
 #define CW   1
 #define CCW  2
