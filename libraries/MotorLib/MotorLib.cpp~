@@ -36,8 +36,8 @@ int Motor::go(int value)
 		{
 		digitalWrite(_inAPin,HIGH);
 		digitalWrite(_inBPin,LOW);
-	
 	}
+	
 	analogWrite(_pwmPin,_value);
 }
 

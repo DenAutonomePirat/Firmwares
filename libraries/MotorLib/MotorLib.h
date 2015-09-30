@@ -7,6 +7,7 @@ public:
 Motor(int inAPin,int inBPin,int pwmPin,int diagAPin,int diagBPin);
 int go(int);
 int diagnostic(void);
+int brake(void);
 private:
 int _inAPin;
 int _inBPin;
