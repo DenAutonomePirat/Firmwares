@@ -39,7 +39,7 @@ THE SOFTWARE.
 #include "I2Cdev.h"
 #include "HMC5883L.h"
 #include "MPU6050.h"
-#include <MS5611.h>
+
 
 // class default I2C address is 0x68
 // specific I2C addresses may be passed as a parameter here
