@@ -11,19 +11,31 @@ Motor::Motor(int inAPin,int inBPin,int pwmPin,int diagAPin,int diagBPin)
   pinMode(pwmPin, OUTPUT);
   pinMode(diagAPin, INPUT);
   pinMode(diagBPin, INPUT);
-  _inAPin= inAPin;
-  _inBPin= inBPin;
+  _inAPin = inAPin;
+  _inBPin = inBPin;
   _pwmPin = pwmPin;
   _diagAPin = diagAPin;
   _diagBPin = diagBPin;
+}
+Motor::Motor(int inAPin,int inBPin,int pwmPin)
+{
+  pinMode(inAPin, OUTPUT);
+  pinMode(inBPin, OUTPUT);
+  pinMode(pwmPin, OUTPUT);
+  _inAPin = inAPin;
+  _inBPin = inBPin;
+  _pwmPin = pwmPin;
 }
 
 int Motor::diagnostic(void)
 {
   return 1;
 }
-int Motor::brake(void)
+void Motor::brake(void)
 {
+	digitalWrite(_inAPin,LOW);
+	digitalWrite(_inBPin,LOW);
+	digitalWrite(_pwmPin,LOW);
 
 }
 

@@ -5,9 +5,10 @@ class Motor
 {
 public:
 Motor(int inAPin,int inBPin,int pwmPin,int diagAPin,int diagBPin);
+Motor(int inAPin,int inBPin,int pwmPin);
 int go(int);
 int diagnostic(void);
-int brake(void);
+void brake(void);
 private:
 int _inAPin;
 int _inBPin;
