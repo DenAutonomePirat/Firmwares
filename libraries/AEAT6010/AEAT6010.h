@@ -13,7 +13,7 @@ class Encoder
     int getAbsolute();
   private:
 	int _Absolute;
-    	int _dataPin;
+    int _dataPin;
 	int _clockPin;
 	int _chipSelect;
 	int _lastPos;

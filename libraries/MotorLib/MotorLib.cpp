@@ -22,7 +22,7 @@ int Motor::diagnostic(void)
 {
   return 1;
 }
-void Motor::brake(void)
+int Motor::brake(void)
 {
 
 }
