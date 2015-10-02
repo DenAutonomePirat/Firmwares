@@ -3,7 +3,7 @@
 */
 #ifndef AEAT6010_h
 #define AEAT6010_h
-
+//Mayby oversampling
 
 class Encoder
 {

@@ -9,6 +9,7 @@ Encoder::Encoder(int dataPin,int clockPin,int chipSelect)
 {
   pinMode(clockPin, OUTPUT);
   pinMode(chipSelect, OUTPUT);
+  pinMode(dataPin,INPUT);
   _clockPin = clockPin;
   _chipSelect = chipSelect;
   _dataPin = dataPin;

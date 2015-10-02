@@ -6,13 +6,21 @@
 
 
 
-SailServo mainSail(1, 2, 3, 6, 7, 8);
+SailServo mainSail(23,25,2,5,6,28,26,22);//	SailServo(int inAPin,int inBPin,int pwmPin,int dataPin,int clockPin,int chipSelect);
+
 
 void setup() {
-  mainSail.init();
+	Serial.begin(115200);
+  	mainSail.init();
+
 }
 
 void loop() {
-  mainSail.setPosition(20);
-  mainSail.update();
+	while (Serial.available() > 0) {
+    	int target = Serial.parseInt();
+    	Serial.println(target);
+  		mainSail.setPosition(target);
+  	}
+  	mainSail.update();
+  	//Serial.println(mainSail.getPosition());
 }

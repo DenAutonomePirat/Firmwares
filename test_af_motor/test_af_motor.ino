@@ -1,8 +1,8 @@
 
 
 #include <MotorLib.h>
-Motor motorMain(4,5,6,2,3);
-Motor motorJib(9,10,11,7,8);
+Motor motorMain(23,25,2,4,5);//Motor(int inAPin,int inBPin,int pwmPin);
+Motor motorJib(27,29,3,6,7);//Motor(int inAPin,int inBPin,int pwmPin);
 
 void setup(){
   

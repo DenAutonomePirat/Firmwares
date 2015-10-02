@@ -27,7 +27,8 @@ int SailServo::init(void){
 	_offset = encoder.getAbsolute();
 }
 int SailServo::setPosition(int value){
-	_targetPos = value;
+	_targetPos = (double)value;
+	_trimming = true;
 	pid.SetMode(AUTOMATIC);
 }
 int SailServo::getPosition(){
@@ -38,10 +39,10 @@ int SailServo::setDeadband(int value){
 } 
 
 int SailServo::update(void){
-	_currentPos = encoder.getAbsolute();
+	_currentPos = (double)encoder.getAbsolute();
 	if(_trimming){
 		pid.Compute();
-		motor.go(_output);
+		motor.go((int)_output);
 		if (abs(_currentPos - _targetPos) <= _deadband){
 			_trimming = false;
 			pid.SetMode(MANUAL);
