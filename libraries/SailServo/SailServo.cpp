@@ -43,10 +43,10 @@ int SailServo::update(void){
 	if(_trimming){
 		pid.Compute();
 		motor.go((int)_output);
-		if (abs(_currentPos - _targetPos) <= _deadband){
-			_trimming = false;
-			pid.SetMode(MANUAL);
-		}
+		//if (abs(_currentPos - _targetPos) <= _deadband){
+		//	_trimming = false;
+		//	pid.SetMode(MANUAL);
+		//}
 	}
 }
 void SailServo::stop(void){
