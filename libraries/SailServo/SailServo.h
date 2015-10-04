@@ -27,7 +27,7 @@ private:
 	Encoder encoder;
 	double _targetPos, _currentPos, _output;
 	bool _homing;
-	int _offset,_deadband=2;
+	int _offset,_deadband=5;
 	bool _trimming;
 	double _Kp=2, _Ki=5, _Kd=1;
 };
