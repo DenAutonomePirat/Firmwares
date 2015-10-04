@@ -15,12 +15,12 @@ public:
 	
 	SailServo(int inAPin,int inBPin,int pwmPin,int diagAPin,int diagBPin,int dataPin,int clockPin,int chipSelect);
 	SailServo(int inAPin,int inBPin,int pwmPin,int dataPin,int clockPin,int chipSelect);
-	int init(void);
-	int setPosition(int pos);
+	bool init(void);
+	bool setPosition(int pos);
 	int getPosition();
-	int setDeadband(int value);
-	int update(void);
-	void stop(void);
+	bool setDeadband(int value);
+	bool update(void);
+	bool stop(void);
 private:
 	PID pid;
 	Motor motor;
@@ -30,6 +30,7 @@ private:
 	int _offset,_deadband=5;
 	bool _trimming;
 	double _Kp=2, _Ki=5, _Kd=1;
+	unsigned long _trimTimestamp;
 };
 
 #endif

@@ -21,43 +21,57 @@ SailServo::SailServo(int inAPin,int inBPin,int pwmPin,int dataPin,int clockPin,i
 	SailServo::init();
 }
 
-int SailServo::init(void){
+bool SailServo::init(void){
 	pid.SetOutputLimits(-256, 255);
 	pid.SetMode(MANUAL);
+	pid.SetTunings( _Kp, _Ki, _Kd);
 	_offset = encoder.getAbsolute();
+	return true;
 	
 }
-int SailServo::setPosition(int value){
+bool SailServo::setPosition(int value){
 	_targetPos = (double)value;
 	_trimming = true;
+	_trimTimestamp = millis()+5000;
 	pid.SetMode(AUTOMATIC);
-	Serial.println(_targetPos);
+	return true;
 }
 
 int SailServo::getPosition(){
-	return _currentPos;
+	return _currentPos = (double)encoder.getAbsolute();
 }
 
-int SailServo::setDeadband(int value){
+bool SailServo::setDeadband(int value){
 	_deadband = value;
+	return true;
 } 
 
-int SailServo::update(void){
-	_currentPos = (double)encoder.getAbsolute();
+bool SailServo::update(void){
 	if(_trimming){
-		if(pid.Compute()){
-			Serial.print ("Target  = ");
-			Serial.println(_targetPos);
-			Serial.print ("Current = ");
-			Serial.println(_currentPos);
-			Serial.print ("Output  = ");
-			Serial.println(_output);
-			motor.go((int)_output);
-		}	
-	}
+		if(millis()<_trimTimestamp){
+			_currentPos = (double)encoder.getAbsolute();
+			for (int i = 0 ; i < 3; i++){
+			_currentPos += (double)encoder.getAbsolute();
+			}
+			_currentPos = _currentPos / 4;
+			_currentPos = _currentPos - _offset;
+			if (abs(_currentPos - _targetPos) < _deadband){
+				SailServo::stop();
+				return true;
+			}
+			if(pid.Compute()){
+				motor.go((int)_output);
+				return true;
+			}
+		} else {
+			SailServo::stop();
+			return false;
+		}
+	}else return false;
 }
-void SailServo::stop(void){
+bool SailServo::stop(void){
 	_trimming = false;
 	motor.brake();
 	pid.SetMode(MANUAL);
+	return true;
 }
