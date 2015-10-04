@@ -7,11 +7,13 @@
 
 
 SailServo mainSail(23,25,2,28,26,24);//	SailServo(int inAPin,int inBPin,int pwmPin,int dataPin,int clockPin,int chipSelect);
-int count;
+long unsigned time;
 
 void setup() {
 	Serial.begin(115200);
   	mainSail.init();
+    mainSail.pid.SetTunings(5,3,.5);
+    mainSail.pid.SetSampleTime(5);
 
 }
 
@@ -21,13 +23,10 @@ void loop() {
     	Serial.println(target);
   		mainSail.setPosition(target);
   	}
-    
+    time = micros();
   	if(mainSail.update()){
-      
-      Serial.print(count);
-      Serial.println(" Updated");
-      count = 0;
-    }else count++;
+      Serial.println(micros()-time);
+    }
   	//Serial.println(mainSail.getPosition());
 
 }

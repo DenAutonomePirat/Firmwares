@@ -21,8 +21,8 @@ public:
 	bool setDeadband(int value);
 	bool update(void);
 	bool stop(void);
-private:
 	PID pid;
+private:
 	Motor motor;
 	Encoder encoder;
 	double _targetPos, _currentPos, _output;
