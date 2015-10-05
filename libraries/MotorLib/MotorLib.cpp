@@ -53,7 +53,7 @@ int Motor::go(int value)
 		digitalWrite(_inAPin,HIGH);
 		digitalWrite(_inBPin,LOW);
 	}
-	
+	if (_value<25)_value=25;
 	analogWrite(_pwmPin,_value);
 }
 

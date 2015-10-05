@@ -32,13 +32,13 @@ bool SailServo::init(void){
 bool SailServo::setPosition(int value){
 	_targetPos = (double)value;
 	_trimming = true;
-	_trimTimestamp = millis()+5000;
+	_trimTimestamp = millis()+10000;
 	pid.SetMode(AUTOMATIC);
 	return true;
 }
 
 int SailServo::getPosition(){
-	return _currentPos = (double)encoder.getAbsolute();
+	return encoder.getAbsolute()- _offset;
 }
 
 bool SailServo::setDeadband(int value){
@@ -50,12 +50,6 @@ bool SailServo::update(void){
 	if(_trimming){
 		if(millis()<_trimTimestamp){
 			_currentPos = (double)encoder.getAbsolute();
-			// Oversampling ?? max 606 Hz on Arduino UNO
-			// 2100 Hz without.
-			//for (int i = 0 ; i < 3; i++){
-			//_currentPos += (double)encoder.getAbsolute();
-			//}
-			//_currentPos = _currentPos / 4;
 			_currentPos = _currentPos - _offset;
 			if (abs(_currentPos - _targetPos) < _deadband){
 				SailServo::stop();
