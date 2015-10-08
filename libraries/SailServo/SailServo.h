@@ -29,7 +29,7 @@ private:
 	bool _homing;
 	int _offset,_deadband=1;
 	bool _trimming;
-	double _Kp=2, _Ki=5, _Kd=1;
+	double _Kp=7, _Ki=7, _Kd=0.3;
 	unsigned long _trimTimestamp;
 };
 

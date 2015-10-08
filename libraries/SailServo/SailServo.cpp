@@ -26,6 +26,7 @@ bool SailServo::init(void){
 	pid.SetMode(MANUAL);
 	pid.SetTunings( _Kp, _Ki, _Kd);
 	_offset = encoder.getAbsolute();
+	pid.SetSampleTime(5);
 	return true;
 	
 }
