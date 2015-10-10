@@ -60,32 +60,44 @@ static float scale = 1 ;                                      //! Stores divisio
 char buf[21];                           // Buffer for printing readings to the LCD.
 
 //! Initialize board
+long nextTime;
+
 void setup()
 {
+  nextTime = millis();
   Serial.begin(115200);
+  digitalWrite(4,HIGH);//Motor PSU /enable
+  pinMode(4,OUTPUT);
 
-  Serial.print("AWI_Ceech Started ");
-   
-
+ 
   // Init LTC2946 default mode (not really needed)
   uint8_t LTC2946_mode;
   int8_t ack = 0;
   LTC2946_mode = CTRLA;                                                         //! Set the configuration of the CTRLA Register.
   ack |= LTC2946_write(LTC2946_I2C_ADDRESS, LTC2946_CTRLA_REG, LTC2946_mode);   //! Sets the LTC2946 to continuous mode
   // Initialize
-  Serial.println(F("Resetting registers, Starting measurement: "));
-  resetAccumulators(CTRLB);     // clear accumulated values
+  //Serial.println(F("Resetting registers, Starting measurement: "));
+  //resetAccumulators(CTRLB);     // clear accumulated values
  }
 
 //! Repeat loop
 void loop()
 {
-  int8_t ack = 0;                               // I2C acknowledge indicator
+  if (digitalRead(8)==1){
+    motorOn();
+  } else {
+    motorOff();
+  }
+  if (millis() >= nextTime){
+    int8_t ack = 0;                               // I2C acknowledge indicator
   // Initialize & Start
   continuous_mode(CTRLA, VOLTAGE_SEL, scale);  //! Continuous Mode Measurement, default measurement, scaled by factor...
   // configure_GPIO(&GPIO_CFG, &GPIO3_CTRL); // GPIO setting
-  printRegisterValues(); // print register values
-  delay(DISPLAY_DELAY);             // Delay for display & send
+  // printRegisterValues(); // print register values
+  // delay(DISPLAY_DELAY);             // Delay for display & send
+  nextTime = millis()+1000;
+  }
+  
  }
 
 // Function Definitions
@@ -161,7 +173,8 @@ int8_t continuous_mode(uint8_t CTRLA,                    //!< CTRLA Register set
   max_power = LTC2946_code_to_power(max_power_code, resistor, LTC2946_Power_lsb);                       
   min_power = LTC2946_code_to_power(min_power_code, resistor, LTC2946_Power_lsb);                       
   
-  Serial.println(power);
+  Serial.print(power);
+  Serial.println(" Watt");
 
   // Current measurements
     uint16_t current_code, max_current_code, min_current_code;
@@ -173,8 +186,8 @@ int8_t continuous_mode(uint8_t CTRLA,                    //!< CTRLA Register set
     current = LTC2946_code_to_current(current_code, resistor, LTC2946_DELTA_SENSE_lsb);
     max_current = LTC2946_code_to_current(max_current_code, resistor, LTC2946_DELTA_SENSE_lsb);
     min_current = LTC2946_code_to_current(min_current_code, resistor, LTC2946_DELTA_SENSE_lsb);
-  
-    Serial.println(current);
+    Serial.print(current,4);
+    Serial.println(" Amp");
  
   // voltage measurements, sense
     uint16_t VIN_code, max_VIN_code, min_VIN_code;
@@ -187,7 +200,8 @@ int8_t continuous_mode(uint8_t CTRLA,                    //!< CTRLA Register set
     max_VIN = LTC2946_VIN_code_to_voltage(max_VIN_code, LTC2946_VIN_lsb);
     min_VIN = LTC2946_VIN_code_to_voltage(min_VIN_code, LTC2946_VIN_lsb);
     
-    Serial.println(VIN);
+    Serial.print(VIN);
+    Serial.println( "volt");
 
   // voltage measurements, ADC
     uint16_t ADIN_code, max_ADIN_code, min_ADIN_code;
@@ -231,4 +245,10 @@ int8_t continuous_mode(uint8_t CTRLA,                    //!< CTRLA Register set
     //lcd.print(buf);
 
   return(ack);
+}
+void motorOn(void){
+  digitalWrite(4,LOW);
+}
+void motorOff(void){
+  digitalWrite(4,HIGH);
 }
